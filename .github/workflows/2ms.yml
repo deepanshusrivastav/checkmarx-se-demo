@@ -1,0 +1,26 @@
+name: Too Many Secrets Scan
+
+on:
+  push:
+    branches:
+      - demo-setup
+
+  pull_request:
+    branches:
+      - demo-setup
+
+jobs:
+  secrets-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Too Many Secrets
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/repo \
+            checkmarx/2ms:latest \
+            --output-format json \
+            /repo
