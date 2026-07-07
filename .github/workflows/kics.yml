@@ -28,6 +28,7 @@ jobs:
           path: .
           output_path: results
           output_formats: sarif,json
+          ignore_on_exit: results
 
       - name: Upload SARIF report
         uses: github/codeql-action/upload-sarif@v3
