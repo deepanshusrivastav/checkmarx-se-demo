@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - demo-setup
+
   pull_request:
     branches:
       - demo-setup
@@ -14,6 +15,7 @@ permissions:
 
 jobs:
   secrets-scan:
+    name: Run Too Many Secrets
     runs-on: ubuntu-latest
 
     steps:
@@ -25,11 +27,12 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/repo" \
             checkmarx/2ms:latest \
-            filesystem /repo \
+            filesystem \
+            --path /repo \
             --report-path /repo/2ms.sarif \
             --ignore-on-exit results
 
-      - name: Upload SARIF
+      - name: Upload SARIF report
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 2ms.sarif
