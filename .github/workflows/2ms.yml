@@ -17,6 +17,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run Too Many Secrets
+      - name: Show 2MS Help
         run: |
-         docker run --rm checkmarx/2ms:latest --help
+          docker run --rm checkmarx/2ms:latest --help
