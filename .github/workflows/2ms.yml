@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
 
 jobs:
   secrets-scan:
@@ -29,10 +28,4 @@ jobs:
             checkmarx/2ms:latest \
             filesystem \
             --path /repo \
-            --report-path /repo/2ms.sarif \
             --ignore-on-exit results
-
-      - name: Upload SARIF report
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 2ms.sarif
