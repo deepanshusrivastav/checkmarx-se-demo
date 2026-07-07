@@ -1,0 +1,35 @@
+name: KICS IaC Security Scan
+
+on:
+  push:
+    branches:
+      - demo-setup
+
+  pull_request:
+    branches:
+      - demo-setup
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  kics-scan:
+    name: Run KICS Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run KICS Scan
+        uses: Checkmarx/kics-github-action@v2.1.20
+        with:
+          path: .
+          output_path: results
+          output_formats: sarif,json
+
+      - name: Upload SARIF report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results/results.sarif
