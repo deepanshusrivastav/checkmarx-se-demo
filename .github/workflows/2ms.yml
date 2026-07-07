@@ -4,10 +4,13 @@ on:
   push:
     branches:
       - demo-setup
-
   pull_request:
     branches:
       - demo-setup
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
   secrets-scan:
@@ -17,6 +20,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Show 2MS Help
+      - name: Run Too Many Secrets
         run: |
-          docker run --rm checkmarx/2ms:latest --help
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            checkmarx/2ms:latest \
+            filesystem /repo \
+            --report-path /repo/2ms.sarif \
+            --ignore-on-exit results
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 2ms.sarif
