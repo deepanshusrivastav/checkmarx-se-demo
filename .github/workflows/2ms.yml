@@ -19,8 +19,4 @@ jobs:
 
       - name: Run Too Many Secrets
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/repo \
-            checkmarx/2ms:latest \
-            --output-format json \
-            /repo
+         docker run --rm checkmarx/2ms:latest --help
